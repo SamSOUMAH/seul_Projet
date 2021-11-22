@@ -1,19 +1,19 @@
-
-class UserModel {
+class User{
     constructor(
-        firstname = "",
-        lastname = "",
-        avatar_url = "",
-        username = "",
-        password = "",
-        id = null) {
-        this.id = id
-        this.firstname = firstname
-        this.lastname = lastname
-        this.avatar_url = avatar_url
-        this.username = username
-        this.password = password
-    }
+               username='',
+               firstname='',
+               lastname='',
+               password='',
+              avatar_url='',
+              id=null){
+                  
+                  this.username=username
+                  this.firstname=firstname
+                  this.lastname=lastname
+                  this.password=password
+                  this.avatar_url=avatar_url
+                  this.id=id
+              }
 }
 
-exports.UserModel = UserModel
+exports.User=User
