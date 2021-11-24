@@ -58,36 +58,58 @@ app.get(`${API_URL.user}/:userId/todos/all`, (req, resp) => {
 
     //fetch data(récupérer des données)
     let newUser=new User(
-        username='kugnuvespo@vusra.com',
-        firstname='abuii',
-        lastname='bgdop',
-        password='passu',
-       avatar_url='https://th.bing.com/th/id/OIP.QDOmzOh-mruIm3MlC7aezgHaE8?pid=ImgDet&rs=1')
-      //password
-       let passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,12}$/
-       if (!passwordPattern.test(newUser.password)){
-           resp.send("<h1 style='color:green'>Le mot de passe doit comporter au moins 8 caractères et au maximum 12 et contenir au moins un numéro un en majuscule et en minuscule😅 !!</h1>")
-           return false 
+        'MBAfYEYYY',
+        'abuii',
+        'bgdop',
+        'Passe1234',
+       'avatar145')
 
-       }
+      //password
+        let passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,12}$/
+        if (!passwordPattern.test(newUser.password)){
+           resp.send("<h1 style='color:green'>Le mot de passe doit comporter au moins 8 caractères et au maximum 12 et contenir au moins un numéro un en majuscule et en minuscule😅 !!</h1>")
+           return
+        }
        //username
-       let usernamePattern = /^.{4,30}$/
-       if (!usernamePattern.test(newUser.username)){
-           resp.send("<h1 style='color:red'>Username Should be at least 4 characters & maximum 30 😅 !!</h1>")
-           return false
-       }
+      let usernamePattern = /^.{4,30}$/
+     if (!usernamePattern.test(newUser.username)){
+      resp.send("<h1 style='color:red'>Username Should be at least 4 characters & maximum 30 😅 !!</h1>")
+      return 
+           }
        //firstname
        let firstnamePattern = /^.{4,12}$/
        if (!firstnamePattern.test(newUser.firstname)){
            resp.send("<h1 style='color:red'>FirstName Should be at least 4 characters & maximum 12 😅 !!</h1>")
-           return false
+           return 
        }
+       
        //lastname
        let lastnamePattern = /^.{4,12}$/
        if (!lastnamePattern.test(newUser.lastname)){
            resp.send("<h1 style='color:red'>LastName Should be at least 4 characters & maximum 12 😅 !!</h1>")
-           return false
+           return 
        }
+
+       //verifier est ce que username existe
+       DB.query(` SELECT * FROM USERS WHERE UserName='${newUser.username}'`,(err,resQ)=>{
+        if(err) throw err
+        else{
+            console.log(resQ);
+            if(resQ.length===0){
+
+                DB.query(` INSERT INTO users (username, password, firstname, lastname, avatar_url) VALUES ('${newUser.username}','${newUser.password}','${newUser.firstname}','${newUser.lastname}','${newUser.avatar_url}')`,
+                 (err,resQ)=>{
+                     if(err)throw err
+                     else {
+                         console.log(resQ)
+                            resp.send("<h1 style='color:green'>utilisateur ajoutées avec succees </h1>")
+                     }
+                 })
+            }else{
+                resp.send("<h1 style='color:red'>already exist </h1>")
+            }
+        }
+       })
 
 
     })
