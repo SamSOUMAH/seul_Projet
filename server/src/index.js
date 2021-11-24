@@ -1,29 +1,29 @@
+//importer les fichiers vers index
 const express = require("express")
 const { API_URL } = require("./config/api")
 const { DB } = require("./config/mysql")
 const {User} = require("./models/user")
 
-//create our app
+//creation de  app
 const app = express()
-
-//enable listening http server
+//activer l'écoute du serveur http 
 app.listen('9000', (req, resp) => {
     console.log("Server is runing on port 9000...")
 })
 
-//users/all
+//utilisateurs/tous 
 app.get(`${API_URL.user}/all`, (httpReq, httpResp) => {
     DB.query(`SELECT * FROM USERS`, (err, resQ) => {
         if (err) throw err
         else {
             console.log(resQ)
-            httpResp.send('Users Fetched...')
+            httpResp.send('Users Fetched...') // la partie qui s'affiche apres la commande:http://localhost:9000/api/users/all
         }
     })
 
 })
 
-//users/1/todos/all : toutes les taches de l'utilisateur id=1
+//users/1/todos/all(utilisateurs/1/todos/all ) : toutes les taches de l'utilisateur id=1
 app.get(`${API_URL.user}/:userId/todos/all`, (req, resp) => {
     let userId = req.params.userId
     //verifier l'existance de l'utilisateur
@@ -35,7 +35,6 @@ app.get(`${API_URL.user}/:userId/todos/all`, (req, resp) => {
                 if (resQ.length === 0) {
                     resp.send("<h1 style='color:red'>user not found</h1>")
                 } else {
-
                     let query = `
                         SELECT * FROM TODOS
                         WHERE userId=${userId}
@@ -54,24 +53,78 @@ app.get(`${API_URL.user}/:userId/todos/all`, (req, resp) => {
 
 })
 
- // user api for register
+ // user api for register(API utilisateur pour s'inscrire )
  app.get("/api/auth/register",(req, resp)=>{
 
-    //fetch data
+    //fetch data(récupérer des données)
     let newUser=new User(
-        username='lordayarda@vusra.com',
-        firstname='ab',
-        lastname='bgdojju',
-        password='pass1234',
-       avatar_url='https://th.bing.com/th/id/OIP.QDOmzOh-mruIm3MlC7aezgHaE8?pid=ImgDet&rs=1'   
-    )
-    if(newUser.firstname.length<4 || newUser.firstname.length>20 )
-    {
-        resp.send('<h1>saaaaluut</h1>')
-        return
-    }
-    console.log('ppppppp')
- })
+        username='kugnuvespo@vusra.com',
+        firstname='abuii',
+        lastname='bgdop',
+        password='passu',
+       avatar_url='https://th.bing.com/th/id/OIP.QDOmzOh-mruIm3MlC7aezgHaE8?pid=ImgDet&rs=1')
+      //password
+       let passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,12}$/
+       if (!passwordPattern.test(newUser.password)){
+           resp.send("<h1 style='color:green'>Le mot de passe doit comporter au moins 8 caractères et au maximum 12 et contenir au moins un numéro un en majuscule et en minuscule😅 !!</h1>")
+           return false 
+
+       }
+       //username
+       let usernamePattern = /^.{4,30}$/
+       if (!usernamePattern.test(newUser.username)){
+           resp.send("<h1 style='color:red'>Username Should be at least 4 characters & maximum 30 😅 !!</h1>")
+           return false
+       }
+       //firstname
+       let firstnamePattern = /^.{4,12}$/
+       if (!firstnamePattern.test(newUser.firstname)){
+           resp.send("<h1 style='color:red'>FirstName Should be at least 4 characters & maximum 12 😅 !!</h1>")
+           return false
+       }
+       //lastname
+       let lastnamePattern = /^.{4,12}$/
+       if (!lastnamePattern.test(newUser.lastname)){
+           resp.send("<h1 style='color:red'>LastName Should be at least 4 characters & maximum 12 😅 !!</h1>")
+           return false
+       }
+
+
+    })
+
+
+
+
+
+
+
+    // if(newUser.firstname.length<4 || newUser.firstname.length>20)
+    // {
+    //     resp.send('<h1 style="color:red">FistName Ici false</h1>')
+    //     return
+    // }
+    // console.log('FistName si cest True')
+
+
+
+//      if(newUser.lastname.length<4 || newUser.lastname.length>20)
+//      {
+//       resp.send('<h1 style="color:green">LastName ici false </h1>')
+//        return
+//      }
+//    console.log('lastName si cest True')
+
+
+//      if(newUser.password.length<8 || newUser.password.length>20)
+//      {
+//          resp.send('<h1 style="color:yellow">password ici false </h1>')
+//         return
+//      }
+//      console.log('password si c\'est True')
+
+
+
+ 
 
 
 

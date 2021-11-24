@@ -5,8 +5,7 @@ class User{
                lastname='',
                password='',
               avatar_url='',
-              id=null){
-                  
+              id=null){ 
                   this.username=username
                   this.firstname=firstname
                   this.lastname=lastname
