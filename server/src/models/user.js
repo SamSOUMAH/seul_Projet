@@ -1,18 +1,25 @@
+const { MAILGUM } = require("../config/mailGun")
+
 class User{
     constructor(
-               username='',
-               firstname='',
-               lastname='',
+               email='',
                password='',
-              avatar_url='',
-              id=null){ 
-                  this.username=username
+               firstname='',
+               lastname='', 
+               avatar_url='',
+               token="",
+               expirationDate=new Date(),
+               isVerified=false,
+               id=null){ 
+                  this.email=email
+                  this.password=password
                   this.firstname=firstname
                   this.lastname=lastname
-                  this.password=password
                   this.avatar_url=avatar_url
                   this.id=id
+                  this.token=token
+                  this.expirationDate=expirationDate
+                  this.isVerified = isVerified
               }
-}
-
+    }
 exports.User=User
